@@ -32,7 +32,7 @@ Source6:	smart-newer.py
 # already merged in my branch, but doing just patches will avoid need for
 # updating it in svn for just a smaller change..
 Patch500:	smart-1.2-revision-913-to-919.patch
-Patch501:	smart-1.2-lib64-pkg-compare-install.patch
+Patch501:	smart-1.2-strict-multilib.patch
 Patch502:	smart-1.2-fix-huge-slowdown-with-pycurl.patch
 
 BuildRequires:	rpm-mandriva-setup
