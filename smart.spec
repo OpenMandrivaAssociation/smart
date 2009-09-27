@@ -7,7 +7,7 @@
 
 Name:		smart
 Version:	1.2
-Release:	%mkrel 9
+Release:	%mkrel 10
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
@@ -32,6 +32,7 @@ Source6:	smart-newer.py
 # already merged in my branch, but doing just patches will avoid need for
 # updating it in svn for just a smaller change..
 Patch500:	smart-1.2-revision-913-to-919.patch
+Patch501:	smart-1.2-lib64-pkg-compare-install.patch
 
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
@@ -91,6 +92,7 @@ KDE tray program for watching updates with Smart Package Manager.
 %prep
 %setup -q
 %patch500 -p0 -b .513-519~
+%patch501 -p0 -b .lib64pkgcompare~
 
 %build
 # (tpg) do not hardcode libdir
