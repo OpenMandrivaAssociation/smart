@@ -33,6 +33,7 @@ Source6:	smart-newer.py
 # updating it in svn for just a smaller change..
 Patch500:	smart-1.2-revision-913-to-919.patch
 Patch501:	smart-1.2-lib64-pkg-compare-install.patch
+Patch502:	smart-1.2-fix-huge-slowdown-with-pycurl.patch
 
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
@@ -93,6 +94,7 @@ KDE tray program for watching updates with Smart Package Manager.
 %setup -q
 %patch500 -p0 -b .513-519~
 %patch501 -p0 -b .lib64pkgcompare~
+%patch502 -p0 -b .pycurlslowdown~
 
 %build
 # (tpg) do not hardcode libdir
