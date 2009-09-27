@@ -97,9 +97,6 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch502 -p0 -b .pycurlslowdown~
 
 %build
-# (tpg) do not hardcode libdir
-sed -e 's,/usr/lib/%{name},%{_libdir}/%{name},g' -i smart/const.py
-
 export CFLAGS="%{optflags}"
 export CXXFLAGS="%{optflags}"
 
@@ -127,7 +124,7 @@ make test
 rm -fr %{buildroot}
 %makeinstall_std
 
-install -m644 %{SOURCE1} -D %{buildroot}%{_libdir}/smart/distro.py
+install -m644 %{SOURCE1} -D %{buildroot}%{_prefix}/lib/smart/distro.py
 
 install -m644 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/security/console.apps/smart-root
 
@@ -224,15 +221,15 @@ rm -rf %{buildroot}
 %doc HACKING README TODO IDEAS doc/*.css doc/*.html
 %config(noreplace) %{_sysconfdir}/security/console.apps/smart-root
 %config(noreplace) %{_sysconfdir}/pam.d/smart-root
-%dir %{_libdir}/%{name}
-%dir %{py_platsitedir}/smart
-%dir %{_localstatedir}/lib/smart/channels
 %attr(0755,root,root)%{_bindir}/%{name}
 %attr(0755,root,root)%{_bindir}/%{name}-root
-%{_libdir}/%{name}/distro.py
+%dir %{_prefix}/lib/%{name}
+%{_prefix}/lib/%{name}/distro.py
+%dir %{py_platsitedir}/smart
 %{py_platsitedir}/smart/*
-%exclude %{py_platsitedir}/smart/interfaces/gtk
 %{py_platsitedir}/*.egg-info
+%exclude %{py_platsitedir}/smart/interfaces/gtk
+%dir %{_localstatedir}/lib/smart/channels
 %{_mandir}/*/*
 
 %files gui
