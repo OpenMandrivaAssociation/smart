@@ -6,8 +6,8 @@
 %bcond_without smart_update
 
 Name:		smart
-Version:	1.2
-Release:	%mkrel 10
+Version:	1.3
+Release:	%mkrel 1
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
@@ -16,7 +16,7 @@ URL:		http://smartpm.org
 #(peroyvind): This isn't really the upstream version, but rather made out of my
 # own Mandriva branch at https://code.launchpad.net/~proyvind/smart/mandriva
 # containing all the mandriva patches merged, various bug fixes and new mandriva
-# specific features such as the urpmychannelsync plugin.
+# specific features such as the urpmichannelsync plugin.
 # Please do *NOT* update smart with upstream version until my branch has been
 # fully merged, doing so will break a lot of stuff and also reintroduce bugs
 # already fixed, not to mention running the risk of being both pushed and
@@ -28,12 +28,6 @@ Source1:	smart-mandriva-distro.py
 Source2:	smart.console
 Source4:	smart-package-manager.desktop
 Source6:	smart-newer.py
-
-# already merged in my branch, but doing just patches will avoid need for
-# updating it in svn for just a smaller change..
-Patch500:	smart-1.2-revision-913-to-919.patch
-Patch501:	smart-1.2-strict-multilib.patch
-Patch502:	smart-1.2-fix-huge-slowdown-with-pycurl.patch
 
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
@@ -64,7 +58,7 @@ Requires:	pygtk2.0
 %description	gui
 Smart GTK user interface.
 
-%if %with smart_update 
+%if %{with smart_update}
 %package	update
 Summary:	Allows execution of 'smart update' by normal users (suid)
 Group:		System/Configuration/Packaging
@@ -75,7 +69,7 @@ Allows execution of 'smart update' by normal users through a
 special suid command.
 %endif
 
-%if %with ksmarttray
+%if %{with ksmarttray}
 %package -n	ksmarttray
 Summary:	KDE tray program for watching updates with Smart Package Manager
 Group:		System/Configuration/Packaging
@@ -92,17 +86,12 @@ KDE tray program for watching updates with Smart Package Manager.
 
 %prep
 %setup -q
-%patch500 -p0 -b .513-519~
-%patch501 -p0 -b .lib64pkgcompare~
-%patch502 -p0 -b .pycurlslowdown~
 
 %build
-export CFLAGS="%{optflags}"
-export CXXFLAGS="%{optflags}"
-
+%setup_compile_flags
 %make
 
-%if %with ksmarttray
+%if %{with ksmarttray}
 pushd contrib/ksmarttray
 make -f admin/Makefile.common
 
@@ -111,7 +100,7 @@ make -f admin/Makefile.common
 popd
 %endif
 
-%if %with smart_update 
+%if %{with smart_update}
 pushd contrib/smart-update
 %make
 popd
@@ -153,11 +142,11 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/smart/channels
 
 install -m644 %{SOURCE6} -D %{buildroot}%{py_platsitedir}/%{name}/commands/newer.py
 
-%if %with smart_update 
+%if %{with smart_update}
 install -m755 contrib/smart-update/smart-update -D %{buildroot}%{_bindir}/smart-update
 %endif
 
-%if %with ksmarttray
+%if %{with ksmarttray}
 pushd contrib/ksmarttray
 %makeinstall_std
 popd
@@ -199,7 +188,7 @@ EOF
 %{clean_desktop_database}
 %endif
 
-%if %with ksmarttray
+%if %{with ksmarttray}
 %if %mdkversion < 200900
 %post -n ksmarttray
 %{update_menus}
@@ -238,12 +227,12 @@ rm -rf %{buildroot}
 %{_datadir}/pixmaps/smart-package-manager.png
 %{py_platsitedir}/smart/interfaces/gtk
 
-%if %with smart_update
+%if %{with smart_update}
 %files update
 %attr(4755,root,root) %{_bindir}/smart-update
 %endif
 
-%if %with ksmarttray
+%if %{with ksmarttray}
 %files -n ksmarttray
 %defattr(-,root,root)
 %{_kde3_bindir}/ksmarttray
