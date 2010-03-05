@@ -5,9 +5,11 @@
 %endif
 %bcond_without smart_update
 
+%define	bzrrel	r943
+
 Name:		smart
-Version:	1.3
-Release:	%mkrel 1
+Version:	1.3.1
+Release:	%mkrel 0.%{bzrrel}.1
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
