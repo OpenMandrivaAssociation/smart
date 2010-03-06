@@ -5,7 +5,7 @@
 %endif
 %bcond_without smart_update
 
-%define	bzrrel	r943
+%define	bzrrel	r946
 
 Name:		smart
 Version:	1.3.1
@@ -36,7 +36,6 @@ BuildRequires:	desktop-file-utils
 # required by test suite
 BuildRequires:	dpkg
 BuildRequires:	python-rpm
-BuildConflicts:	python-curl
 Requires:	python-rpm python-liblzma >= 0.4.0
 Requires:	usermode-consoleonly
 %ifarch %{ix86}
