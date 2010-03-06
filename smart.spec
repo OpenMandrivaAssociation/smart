@@ -177,32 +177,6 @@ EOF
 
 %find_lang %{name}
 
-%if %mdkversion < 200900
-%post gui
-%{update_menus}
-%{update_desktop_database}
-%endif
-
-%if %mdkversion < 200900
-%postun gui
-%{clean_menus}
-%{clean_desktop_database}
-%endif
-
-%if %{with ksmarttray}
-%if %mdkversion < 200900
-%post -n ksmarttray
-%{update_menus}
-%{update_desktop_database}
-%endif
-
-%if %mdkversion < 200900
-%postun -n ksmarttray
-%{clean_menus}
-%{clean_desktop_database}
-%endif
-%endif
-
 %clean
 rm -rf %{buildroot}
 
