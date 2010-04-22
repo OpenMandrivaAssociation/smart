@@ -5,7 +5,7 @@
 %endif
 %bcond_without smart_update
 
-%define	bzrrel	r946
+%define	bzrrel	r948
 
 Name:		smart
 Version:	1.3.1
