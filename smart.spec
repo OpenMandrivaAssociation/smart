@@ -9,7 +9,7 @@
 
 Name:		smart
 Version:	1.4
-Release:	%mkrel 1.%{bzrrel}.1
+Release:	1.%{bzrrel}.1
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
@@ -42,8 +42,7 @@ Requires:	usermode-consoleonly
 Requires:	python-psyco
 %endif
 Suggests:	python-curl
-%py_requires -d
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRequires:	python-devel
 
 %description
 Smart Package Manager is a next generation package handling tool.
@@ -111,7 +110,6 @@ popd
 make test
 
 %install
-rm -fr %{buildroot}
 %makeinstall_std
 
 install -m644 %{SOURCE1} -D %{buildroot}%{_prefix}/lib/smart/distro.py
@@ -177,9 +175,6 @@ EOF
 
 %find_lang %{name}
 
-%clean
-rm -rf %{buildroot}
-
 %files -f %{name}.lang
 %defattr(0644,root,root,0755)
 %doc HACKING README TODO IDEAS doc/*.css doc/*.html
@@ -209,7 +204,6 @@ rm -rf %{buildroot}
 
 %if %{with ksmarttray}
 %files -n ksmarttray
-%defattr(-,root,root)
 %{_kde3_bindir}/ksmarttray
 %{_kde3_bindir}/kde_add_smart_channel.sh
 %{_kde3_datadir}/apps/ksmarttray
