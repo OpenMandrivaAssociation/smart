@@ -43,6 +43,7 @@ Requires:	python-psyco
 %endif
 Suggests:	python-curl
 BuildRequires:	python-devel
+BuildRequires:	python-curl
 
 %description
 Smart Package Manager is a next generation package handling tool.
