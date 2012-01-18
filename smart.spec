@@ -42,7 +42,7 @@ Summary:	Smart GTK user interface
 Group:		System/Configuration/Packaging
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{EVRD}
 Requires:	pygtk2.0
 
 %description	gui
@@ -52,7 +52,7 @@ Smart GTK user interface.
 %package	update
 Summary:	Allows execution of 'smart update' by normal users (suid)
 Group:		System/Configuration/Packaging
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{EVRD}
 
 %description	update
 Allows execution of 'smart update' by normal users through a
@@ -65,7 +65,7 @@ Summary:	KDE tray program for watching updates with Smart Package Manager
 Group:		System/Configuration/Packaging
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
-Requires:	%{name}-update = %{epoch}:%{version}-%{release}
+Requires:	%{name}-update = %{EVRD}
 BuildRequires:	kdelibs-devel
 BuildRequires:	popt
 BuildRequires:	rpm-devel
