@@ -27,6 +27,8 @@ Patch1:		smart-1.4.1-enable-distepoch.patch
 Patch2:		smart-1.4.1-applet.patch
 
 Patch603:	smart-1.4.1-cache-packages-toggle.patch
+Patch609:	smart-1.4.1-pycurl-speedup.patch
+
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
 # required by test suite
@@ -97,6 +99,7 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch1 -p1 -b .distepoch~
 %patch2 -p1 -b .applet~
 %patch603 -p1 -b .cache_packages_toggle~
+%patch609 -p1 -b .pycurl_speedup~
 cp %{SOURCE9} contrib/smart-applet
 
 %build
