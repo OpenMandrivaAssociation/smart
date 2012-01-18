@@ -5,31 +5,21 @@
 %endif
 %bcond_without smart_update
 
-%define	bzrrel	r951
-
 Name:		smart
-Version:	1.4
-Release:	1.%{bzrrel}.2
+Version:	1.4.1
+Release:	1
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
 License:	GPLv2+
 URL:		http://smartpm.org
-#(peroyvind): This isn't really the upstream version, but rather made out of my
-# own Mandriva branch at https://code.launchpad.net/~proyvind/smart/mandriva
-# containing all the mandriva patches merged, various bug fixes and new mandriva
-# specific features such as the urpmichannelsync plugin.
-# Please do *NOT* update smart with upstream version until my branch has been
-# fully merged, doing so will break a lot of stuff and also reintroduce bugs
-# already fixed, not to mention running the risk of being both pushed and
-# shoved at the same time up and down the stairs repeatedly untill you've
-# discovered the terrible secret of space and then some! For any questions
-# about this branch, just ask! :)
-Source0:	http://labix.org/download/smart/%{name}-%{version}.tar.xz
+Source0:	http://labix.org/download/smart/%{name}-%{version}.tar.bz2
 Source1:	smart-mandriva-distro.py
 Source2:	smart.console
 Source4:	smart-package-manager.desktop
 Source6:	smart-newer.py
+Patch0:		smart-1.4.1-disable-pycurl-check-for-now.patch
+Patch1:		smart-1.4.1-enable-distepoch.patch
 
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
@@ -43,7 +33,6 @@ Requires:	python-psyco
 %endif
 Suggests:	python-curl
 BuildRequires:	python-devel
-BuildRequires:	python-curl
 
 %description
 Smart Package Manager is a next generation package handling tool.
@@ -87,6 +76,8 @@ KDE tray program for watching updates with Smart Package Manager.
 
 %prep
 %setup -q
+%patch0 -p1 -b .disable_curl~
+%patch1 -p1 -b .distepoch~
 
 %build
 %setup_compile_flags
