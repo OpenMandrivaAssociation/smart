@@ -68,7 +68,7 @@ special suid command.
 %package	applet
 Summary:	Smart system tray applet
 Group:		System/Configuration/Packaging
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{EVRD}
 Requires:	gnome-python
 
 %description	applet
