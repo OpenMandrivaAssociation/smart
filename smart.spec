@@ -29,6 +29,7 @@ Patch603:	smart-1.4.1-cache-packages-toggle.patch
 Patch609:	smart-1.4.1-pycurl-speedup.patch
 Patch610:	smart-1.4.1-pycurl-ftp-segfault.patch
 Patch611:	smart-1.4.1-pycurl-for-ftp-only.patch
+Patch615:	smart-1.4.1-coercing2unicode.patch
 Patch616:	smart-1.4.1-prefer-last-ok-mirror.patch
 
 BuildRequires:	rpm-mandriva-setup
@@ -104,6 +105,7 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch609 -p1 -b .pycurl_speedup~
 %patch610 -p1 -b .ftp_segfault_pycurl~
 %patch611 -p1 -b .pycurl_for_ftp_only~
+%patch615 -p1 -b .coercing2unicode~
 %patch616 -p1 -b .prefer_last_ok_mirror~
 cp %{SOURCE9} contrib/smart-applet
 
