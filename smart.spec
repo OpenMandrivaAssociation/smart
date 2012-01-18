@@ -4,6 +4,7 @@
 %bcond_with    ksmarttray
 %endif
 %bcond_without smart_update
+%bcond_without smart_applet
 
 Name:		smart
 Version:	1.4.1
@@ -18,8 +19,12 @@ Source1:	smart-mandriva-distro.py
 Source2:	smart.console
 Source4:	smart-package-manager.desktop
 Source6:	smart-newer.py
+Source7:	smart-install.desktop
+Source8:	smart-applet.desktop
+Source9:	smart-applet.png
 Patch0:		smart-1.4.1-disable-pycurl-check-for-now.patch
 Patch1:		smart-1.4.1-enable-distepoch.patch
+Patch2:		smart-1.4.1-applet.patch
 
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
@@ -59,6 +64,17 @@ Allows execution of 'smart update' by normal users through a
 special suid command.
 %endif
 
+%if %{with smart_applet}
+%package	applet
+Summary:	Smart system tray applet
+Group:		System/Configuration/Packaging
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	gnome-python
+
+%description	applet
+Smart system tray applet.
+%endif
+
 %if %{with ksmarttray}
 %package -n	ksmarttray
 Summary:	KDE tray program for watching updates with Smart Package Manager
@@ -78,6 +94,8 @@ KDE tray program for watching updates with Smart Package Manager.
 %setup -q
 %patch0 -p1 -b .disable_curl~
 %patch1 -p1 -b .distepoch~
+%patch2 -p1 -b .applet~
+cp %{SOURCE9} contrib/smart-applet
 
 %build
 %setup_compile_flags
@@ -137,6 +155,17 @@ install -m644 %{SOURCE6} -D %{buildroot}%{py_platsitedir}/%{name}/commands/newer
 install -m755 contrib/smart-update/smart-update -D %{buildroot}%{_bindir}/smart-update
 %endif
 
+%if %{with smart_applet}
+desktop-file-install \
+	--dir %{buildroot}%{_datadir}/applications \
+	%{SOURCE8}
+install -m755 contrib/smart-applet/smart-applet.py  -D %{buildroot}%{_bindir}/smart-applet
+install -m644 contrib/smart-applet/smart-applet.png  -D %{buildroot}%{_datadir}/pixmaps/smart-applet.png
+install -m644 contrib/smart-applet/smart-helper.pam %{buildroot}%{_sysconfdir}/pam.d/smart-helper
+install -m644 contrib/smart-applet/smart-helper.helper %{buildroot}%{_sysconfdir}/security/console.apps/smart-helper
+ln -sf consolehelper %{buildroot}%{_bindir}/smart-helper
+%endif
+
 %if %{with ksmarttray}
 pushd contrib/ksmarttray
 %makeinstall_std
@@ -167,6 +196,12 @@ EOF
 
 %find_lang %{name}
 
+%if 0
+%post gui
+xdg-mime default smart-install.desktop application/x-rpm
+xdg-mime default smart-install.desktop application/x-redhat-package-manager
+%endif
+
 %files -f %{name}.lang
 %defattr(0644,root,root,0755)
 %doc HACKING README TODO IDEAS doc/*.css doc/*.html
@@ -192,6 +227,16 @@ EOF
 %if %{with smart_update}
 %files update
 %attr(4755,root,root) %{_bindir}/smart-update
+%endif
+
+%if %{with smart_applet}
+%files applet
+%config(noreplace) %{_sysconfdir}/security/console.apps/smart-helper
+%config(noreplace) %{_sysconfdir}/pam.d/smart-helper
+%attr(4755,root,root) %{_bindir}/smart-applet
+%{_bindir}/smart-helper
+%{_datadir}/applications/smart-applet.desktop
+%{_datadir}/pixmaps/smart-applet.png
 %endif
 
 %if %{with ksmarttray}
