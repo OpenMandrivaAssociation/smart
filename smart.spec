@@ -28,6 +28,7 @@ Patch2:		smart-1.4.1-applet.patch
 
 Patch603:	smart-1.4.1-cache-packages-toggle.patch
 Patch609:	smart-1.4.1-pycurl-speedup.patch
+Patch610:	smart-1.4.1-pycurl-ftp-segfault.patch
 
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
@@ -100,6 +101,7 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch2 -p1 -b .applet~
 %patch603 -p1 -b .cache_packages_toggle~
 %patch609 -p1 -b .pycurl_speedup~
+%patch610 -p1 -b .ftp_segfault_pycurl~
 cp %{SOURCE9} contrib/smart-applet
 
 %build
