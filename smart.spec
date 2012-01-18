@@ -32,6 +32,7 @@ Patch611:	smart-1.4.1-pycurl-for-ftp-only.patch
 Patch613:	smart-1.4.1-keyerror.patch
 Patch615:	smart-1.4.1-coercing2unicode.patch
 Patch616:	smart-1.4.1-prefer-last-ok-mirror.patch
+Patch619:	smart-1.4.1-info-perm-denied.patch
 
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
@@ -109,6 +110,7 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch613 -p1 -b .keyerror~
 %patch615 -p1 -b .coercing2unicode~
 %patch616 -p1 -b .prefer_last_ok_mirror~
+%patch619 -p1 -b .info_perm_denied~
 cp %{SOURCE9} contrib/smart-applet
 
 %build
