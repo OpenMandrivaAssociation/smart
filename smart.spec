@@ -130,9 +130,9 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch618 -p1 -b .inst_by_provide_fix~
 %patch619 -p1 -b .info_perm_denied~
 %patch803 -p1 -b .uncompress_close~
-%patch805 -p0 -b .rpm_suggests~
-%patch806 -p0 -b .deb_suggests~
-%patch1008 -p0 -b .update_channels~
+%patch805 -p1 -b .rpm_suggests~
+%patch806 -p1 -b .deb_suggests~
+%patch1008 -p1 -b .update_channels~
 cp %{SOURCE9} contrib/smart-applet
 
 %build
