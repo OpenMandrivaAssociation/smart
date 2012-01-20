@@ -22,6 +22,8 @@ Source6:	smart-newer.py
 Source7:	smart-install.desktop
 Source8:	smart-applet.desktop
 Source9:	smart-applet.png
+Source10:	smart-unity-distro.py
+
 Patch1:		smart-1.4.1-enable-distepoch.patch
 Patch2:		smart-1.4.1-applet.patch
 
@@ -148,7 +150,11 @@ make test
 %install
 %makeinstall_std
 
+%if "%{disttag}" == "unity"
+install -m644 %{SOURCE10} -D %{buildroot}%{_prefix}/lib/smart/distro.py
+%else
 install -m644 %{SOURCE1} -D %{buildroot}%{_prefix}/lib/smart/distro.py
+%endif
 
 install -m644 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/security/console.apps/smart-root
 
