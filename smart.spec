@@ -28,6 +28,7 @@ Patch1:		smart-1.4.1-enable-distepoch.patch
 Patch2:		smart-1.4.1-applet.patch
 
 Patch603:	smart-1.4.1-cache-packages-toggle.patch
+Patch606:	smart-1.4.1-sysstdoutencoding-utf-8.patch
 Patch607:	smart-1.4.1-saving-cache-msgbox.patch
 Patch609:	smart-1.4.1-pycurl-speedup.patch
 Patch610:	smart-1.4.1-pycurl-ftp-segfault.patch
@@ -114,6 +115,7 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch1 -p1 -b .distepoch~
 %patch2 -p1 -b .applet~
 %patch603 -p1 -b .cache_packages_toggle~
+%patch606 -p1 -b .sysstdoutencoding_utf-8~
 %patch607 -p1 -b .saving_cache_msgbox~
 %patch609 -p1 -b .pycurl_speedup~
 %patch610 -p1 -b .ftp_segfault_pycurl~
