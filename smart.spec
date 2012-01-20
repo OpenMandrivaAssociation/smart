@@ -35,6 +35,10 @@ Patch615:	smart-1.4.1-coercing2unicode.patch
 Patch616:	smart-1.4.1-prefer-last-ok-mirror.patch
 Patch618:	smart-1.4.1-inst-by-provide-fix.patch
 Patch619:	smart-1.4.1-info-perm-denied.patch
+# https://bugs.launchpad.net/smart/+bug/268143
+# add suggest config to ignore or install for rpm&deb
+Patch805:	smart-1.4.1-rpm-suggests-config.patch
+Patch806:	smart-1.4.1-deb-suggests-config.patch
 
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
@@ -115,6 +119,8 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch616 -p1 -b .prefer_last_ok_mirror~
 %patch618 -p1 -b .inst_by_provide_fix~
 %patch619 -p1 -b .info_perm_denied~
+%patch805 -p0 -b .rpm-suggests~
+%patch806 -p0 -b .deb-suggests~
 cp %{SOURCE9} contrib/smart-applet
 
 %build
