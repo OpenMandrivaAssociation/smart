@@ -63,12 +63,14 @@ Summary:	Smart GTK user interface
 Group:		System/Configuration/Packaging
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
+%if "%{disttag}" == "unity"
+Requires(post):	xdg-utils
+%endif
 Requires:	%{name} = %{EVRD}
 Requires:	pygtk2.0
 
 %description	gui
 Smart GTK user interface.
-Patch611:	smart-1.4.1-pycurl-for-ftp-only.patch
 
 %if %{with smart_update}
 %package	update
@@ -228,7 +230,7 @@ EOF
 
 %find_lang %{name}
 
-%if 0
+%if "%{disttag}" == "unity"
 %post gui
 xdg-mime default smart-install.desktop application/x-rpm
 xdg-mime default smart-install.desktop application/x-redhat-package-manager
