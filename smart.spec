@@ -45,6 +45,7 @@ Patch803:	smart-1.4.1-uncompress-close.patch
 # add suggest config to ignore or install for rpm&deb
 Patch805:	smart-1.4.1-rpm-suggests-config.patch
 Patch806:	smart-1.4.1-deb-suggests-config.patch
+Patch1007:	smart-1.4.1-computing_upgrades_989_988.patch
 Patch1008:	smart-1.4.1-install-update.patch
 
 BuildRequires:	rpm-mandriva-setup
@@ -132,6 +133,7 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch803 -p1 -b .uncompress_close~
 %patch805 -p1 -b .rpm_suggests~
 %patch806 -p1 -b .deb_suggests~
+%patch1007 -p1 -b .computation~
 %patch1008 -p1 -b .update_channels~
 cp %{SOURCE9} contrib/smart-applet
 
