@@ -48,12 +48,12 @@ BuildRequires:	desktop-file-utils
 # required by test suite
 BuildRequires:	dpkg
 BuildRequires:	python-rpm
-Requires:	python-rpm python-liblzma >= 0.4.0
+Requires:	python-rpm pythonegg(pyliblzma) >= 0.4.0
 Requires:	usermode-consoleonly
 %ifarch %{ix86}
-Requires:	python-psyco
+Requires:	pythonegg(psyco)
 %endif
-Suggests:	python-curl
+Suggests:	pythonegg(pycurl)
 BuildRequires:	python-devel
 
 %description
