@@ -8,7 +8,7 @@
 
 Name:		smart
 Version:	1.4.1
-Release:	1
+Release:	2
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
@@ -47,6 +47,7 @@ Patch805:	smart-1.4.1-rpm-suggests-config.patch
 Patch806:	smart-1.4.1-deb-suggests-config.patch
 Patch1007:	smart-1.4.1-computing_upgrades_989_988.patch
 Patch1008:	smart-1.4.1-install-update.patch
+Patch1009:	smart-1.4.1-dont-use-_RPMVSF_NOSIGNATURES.patch
 
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
@@ -135,6 +136,7 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch806 -p1 -b .deb_suggests~
 %patch1007 -p1 -b .computation~
 %patch1008 -p1 -b .update_channels~
+%patch1009 -p1 -b .nosig~
 cp %{SOURCE9} contrib/smart-applet
 
 %build
