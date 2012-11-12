@@ -1,0 +1,125 @@
+--- smart-1.4.1/smart/fetcher.py.keyerror~	2012-01-18 19:35:11.380803889 +0100
++++ smart-1.4.1/smart/fetcher.py	2012-01-18 19:38:59.527083835 +0100
+@@ -261,6 +261,7 @@ class Fetcher(object):
+                     if (item.getRetries() < MAXRETRIES and
+                         item.setNextURL()):
+                         item.reset()
++                        item.start()
+                         handler = self.getHandlerInstance(item)
+                         handler.enqueue(item)
+                         if handler not in active:
+@@ -484,7 +485,7 @@ class FetchItem(object):
+         if self._progress.getSub(url):
+             self._progress.setSubStopped(url)
+             self._progress.show()
+-            self._progress.resetSub(url)
++        self._progress.resetSub(url)
+ 
+     def getRetries(self):
+         return self._retries
+@@ -1094,9 +1095,9 @@ class FTPHandler(FetcherHandler):
+                 valid, reason = fetcher.validate(item, localpath,
+                                                  withreason=True)
+                 if not valid:
++                    item.reset()
+                     if openmode == "a":
+                         # Try again, from the very start.
+-                        item.reset()
+                         self._lock.acquire()
+                         self._queue.append(item)
+                         self._lock.release()
+@@ -1295,9 +1296,9 @@ class URLLIBHandler(FetcherHandler):
+                 valid, reason = fetcher.validate(item, localpath,
+                                                  withreason=True)
+                 if not valid:
++                    item.reset()
+                     if openmode == "a":
+                         # Try again, from the very start.
+-                        item.reset()
+                         self._lock.acquire()
+                         self._queue.append(item)
+                         self._lock.release()
+@@ -1617,10 +1618,12 @@ class PyCurlHandler(FetcherHandler):
+                     if valid:
+                         fetchedsize = handle.getinfo(pycurl.SIZE_DOWNLOAD)
+                         item.setSucceeded(localpath, fetchedsize)
+-                    elif handle.partsize:
+-                        self._queue.append(item)
+                     else:
+-                        item.setFailed(reason)
++                        item.reset()
++                        if handle.partsize:
++                            self._queue.append(item)
++                        else:
++                            item.setFailed(reason)
+ 
+             for handle, errno, errmsg in failed:
+ 
+@@ -1911,6 +1914,7 @@ class SCPHandler(FetcherHandler):
+                 valid, reason = fetcher.validate(item, localpath,
+                                                  withreason=True)
+                 if not valid:
++                    item.reset()
+                     raise Error, reason
+ 
+         except (Error, IOError, OSError), e:
+--- smart-1.4.1/smart/progress.py.keyerror~	2011-08-18 15:06:34.000000000 +0200
++++ smart-1.4.1/smart/progress.py	2012-01-18 19:38:59.527083835 +0100
+@@ -39,6 +39,8 @@ class Progress(object):
+         self.__lasttime = 0
+         self.__lock = thread.allocate_lock()
+         self.__hassub = False
++        self.__fragmentbackup = {}
++        self.__subsucceeded = {}
+ 
+     def lock(self):
+         self.__lock.acquire()
+@@ -60,6 +62,8 @@ class Progress(object):
+         self.__subdone.clear()
+         self.__lasttime = 0
+         self.__hassub = False
++        self.__fragmentbackup.clear()
++        self.__subsucceeded.clear()
+ 
+     def setHasSub(self, flag):
+         self.__hassub = flag
+@@ -93,6 +97,7 @@ class Progress(object):
+                 subdone = False
+                 if subpercent == 100:
+                     self.__subdone[subkey] = True
++                    self.__subsucceeded[subkey] = True
+                     subdone = True
+                     if fragment:
+                         _current, _total, _data = self.__progress
+@@ -110,6 +115,9 @@ class Progress(object):
+                     self.expose(topic, percent, *info)
+                     if info[-1]:
+                         subkey = info[0]
++                        (subcurrent, subtotal,
++                        fragment, subdata) = self.__subprogress[subkey]
++                        self.__fragmentbackup[subkey] = fragment
+                         del self.__subprogress[subkey]
+                         del self.__sublastshown[subkey]
+                         del self.__subtopic[subkey]
+@@ -275,11 +283,21 @@ class Progress(object):
+         try:
+             if subkey in self.__subdone:
+                 del self.__subdone[subkey]
++            fragment = 0
+             if subkey in self.__subprogress:
+                 (subcurrent, subtotal,
+                  fragment, subdata) = self.__subprogress[subkey]
+                 self.__subprogress[subkey] = (0, subtotal, fragment, {})
++            elif subkey in self.__fragmentbackup:
++                fragment = self.__fragmentbackup[subkey]
+             self.__lasttime = 0
++            if subkey in self.__subsucceeded:
++                del self.__subsucceeded[subkey]
++                self.__done = False
++                if fragment:
++                    self.__lock.release()
++                    self.add(-fragment)
++                    self.__lock.acquire()
+         finally:
+             self.__lock.release()
+ 

@@ -1,0 +1,107 @@
+--- smart-1.4.1/smart/channels/rpm_md.py.prefer-last-ok-mirror~	2010-12-06 10:11:05.000000000 +0100
++++ smart-1.4.1/smart/channels/rpm_md.py	2012-01-18 19:09:50.576963984 +0100
+@@ -268,7 +268,8 @@ class RPMMetaDataChannel(PackageChannel,
+                                uncomp_sha=primary.get("uncomp_sha"),
+                                sha256=primary.get("sha256"),
+                                uncomp_sha256=primary.get("uncomp_sha256"),
+-                               uncomp=True)
++                               uncomp=True,
++                               prefer_last_ok_mirror=True)
+         flitem = fetcher.enqueue(filelists["url"],
+                                  md5=filelists.get("md5"),
+                                  uncomp_md5=filelists.get("uncomp_md5"),
+@@ -276,7 +277,8 @@ class RPMMetaDataChannel(PackageChannel,
+                                  uncomp_sha=filelists.get("uncomp_sha"),
+                                  sha256=filelists.get("sha256"),
+                                  uncomp_sha256=filelists.get("uncomp_sha256"),
+-                                 uncomp=True)
++                                 uncomp=True,
++                                 prefer_last_ok_mirror=True)
+         if "updateinfo" in info:
+             uiitem = fetcher.enqueue(info["updateinfo"]["url"],
+                                    md5=info["updateinfo"].get("md5"),
+--- smart-1.4.1/smart/fetcher.py.prefer-last-ok-mirror~	2012-01-18 18:59:58.412236830 +0100
++++ smart-1.4.1/smart/fetcher.py	2012-01-18 19:09:08.087911587 +0100
+@@ -169,10 +169,8 @@ class Fetcher(object):
+         if url in self._items:
+             raise Error, _("%s is already in the queue") % url
+         mirror = self._mirrorsystem.get(url)
+-        item = FetchItem(self, url, mirror)
++        item = FetchItem(self, url, mirror, **info)
+         self._items[url] = item
+-        if info:
+-            item.setInfo(**info)
+         handler = self.getHandlerInstance(item)
+         handler.enqueue(item)
+         return item
+@@ -444,11 +442,19 @@ class Fetcher(object):
+ 
+ class FetchItem(object):
+ 
+-    def __init__(self, fetcher, url, mirror):
++    def __init__(self, fetcher, url, mirror, **info):
+         self._fetcher = fetcher
+         self._url = url
+         self._mirror = mirror
+-        self._urlobj = URL(mirror.getNext())
++        if info:
++            self._info = info
++        else:
++            self._info = {}
++
++        preferredmirror = None
++        if sysconf.get("prefer-origin"):
++            preferredmirror = self._url
++        self._urlobj = URL(mirror.getNext(self._info.get("prefer_last_ok_mirror"), preferredmirror))
+         self._retries = 0
+         self._starttime = None
+         self._current = 0
+@@ -458,8 +464,6 @@ class FetchItem(object):
+         self._speedtime = 0
+         self._speedcurrent = 0
+ 
+-        self._info = {}
+-
+         self._status = WAITING
+         self._failedreason = None
+         self._targetpath = None
+@@ -487,7 +491,7 @@ class FetchItem(object):
+ 
+     def setNextURL(self):
+         self._retries += 1
+-        url = self._mirror.getNext()
++        url = self._mirror.getNext(self._info.get("prefer_last_ok_mirror"))
+         if url:
+             self._urlobj.set(url)
+             return True
+--- smart-1.4.1/smart/mirror.py.prefer-last-ok-mirror~	2010-12-03 23:08:06.000000000 +0100
++++ smart-1.4.1/smart/mirror.py	2012-01-18 19:09:08.092911595 +0100
+@@ -110,7 +110,7 @@ class MirrorSystem(object):
+                 # Integer division by granularity ensures that mirrors
+                 # which are close enough will be considered equal to
+                 # distribute load.
+-                penality /= GRANULARITY
++                penality //= GRANULARITY
+                 self._penality[mirror] = penality
+                 if penality > maxpenality:
+                     maxpenality = penality
+@@ -152,8 +152,18 @@ class MirrorItem(object):
+         if self._current and hasattr(self._current, 'mirror'):
+             self._system.addInfo(self._current.mirror, **info)
+ 
+-    def getNext(self):
++    def getNext(self, preferlastok=False, preferedmirror=None):
+         if self._elements:
++            preferred = preferedmirror
++            if preferlastok and self._system._history:
++                (mirror, info) = self._system._history[0]
++                if not info.get("failed"):
++                    preferred = mirror
++            if preferred:
++                    for elem in self._elements:
++                        if preferred.startswith(elem.mirror):
++                            self._current = elem
++                            return elem.mirror+self._url[len(elem.origin):]
+             self._system.updatePenality()
+             random.shuffle(self._elements)
+             self._elements.sort()

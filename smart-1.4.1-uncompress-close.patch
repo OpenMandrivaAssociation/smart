@@ -1,0 +1,65 @@
+--- smart-1.4.1/smart/uncompress.py.uncompress-close~	2010-12-03 23:08:06.000000000 +0100
++++ smart-1.4.1/smart/uncompress.py	2012-01-20 21:47:37.091643651 +0100
+@@ -74,6 +74,8 @@ class BZ2Handler(UncompressorHandler):
+             while data:
+                 output.write(data)
+                 data = input.read(BLOCKSIZE)
++            input.close()
++            output.close()
+         except (IOError, OSError), e:
+             raise Error, "%s: %s" % (localpath, e)
+         except EOFError, e:
+@@ -108,6 +110,8 @@ class LZMAHandler(UncompressorHandler):
+             while data:
+                 output.write(data)
+                 data = input.read(BLOCKSIZE)
++            input.close()
++            output.close()
+         except (IOError, OSError), e:
+             raise Error, "%s: %s" % (localpath, e)
+         except EOFError, e:
+@@ -135,6 +139,8 @@ class XZHandler(UncompressorHandler):
+             while data:
+                 output.write(data)
+                 data = input.read(BLOCKSIZE)
++            input.close()
++            output.close()
+         except (IOError, OSError), e:
+             raise Error, "%s: %s" % (localpath, e)
+         except EOFError, e:
+@@ -160,6 +166,8 @@ class GZipHandler(UncompressorHandler):
+             while data:
+                 output.write(data)
+                 data = input.read(BLOCKSIZE)
++            input.close()
++            output.close()
+         except (IOError, OSError), e:
+             raise Error, "%s: %s" % (localpath, e)
+         except EOFError, e:
+@@ -199,6 +207,7 @@ class ZipHandler(UncompressorHandler):
+             data = zip.read(name)
+             output.write(data)
+             zip.close()
++            output.close()
+         except (IOError, OSError), e:
+             raise Error, "%s: %s" % (localpath, e)
+ 
+@@ -227,7 +236,8 @@ class SevenZipHandler(UncompressorHandle
+     def uncompress(self, localpath, name=None):
+         import py7zlib
+         try:
+-            zip = py7zlib.Archive7z(open(localpath, 'r'))
++            file = open(localpath, 'r')
++            zip = py7zlib.Archive7z(file)
+             members = zip.getnames()
+             if not name:
+                 name = members[0]
+@@ -235,6 +245,8 @@ class SevenZipHandler(UncompressorHandle
+             input = zip.getmember(name)
+             data = input.read()
+             output.write(data)
++            file.close()
++            output.close()
+         except (IOError, OSError), e:
+             raise Error, "%s: %s" % (localpath, e)
+ 

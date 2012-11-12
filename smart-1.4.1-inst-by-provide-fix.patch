@@ -1,0 +1,28 @@
+--- smart-1.4.1/smart/commands/install.py.inst_by_provide_fix~	2011-03-01 17:00:47.000000000 +0100
++++ smart-1.4.1/smart/commands/install.py	2012-01-18 19:52:08.561065017 +0100
+@@ -141,19 +141,21 @@ def main(ctrl, opts):
+             installed = False
+             names = {}
+             for obj in results:
++                installed = True
+                 for pkg in obj.packages:
+                     if pkg.installed:
+-                        iface.warning(_("%s (for %s) is already installed")
+-                                      % (pkg, arg))
+-                        installed = True
+-                        break
++                        lastinstalled = (pkg, arg)
+                     else:
++                        installed = False
+                         pkgs.append(pkg)
+                         names[pkg.name] = True
+                 else:
++                    installed = False
+                     continue
+                 break
+             if installed:
++                iface.warning(_("%s (for %s) is already installed")
++                                      % lastinstalled)
+                 continue
+             if len(names) == 2 and sysconf.get("rpm-strict-multilib"):
+                 from smart.backends.rpm.rpmver import splitarch

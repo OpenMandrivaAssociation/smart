@@ -1,0 +1,53 @@
+--- smart-1.4.1/smart/backends/deb/loader.py.deb-suggests~	2011-10-09 10:50:25.000000000 +0200
++++ smart-1.4.1/smart/backends/deb/loader.py	2012-01-20 21:15:11.395601325 +0100
+@@ -212,6 +212,22 @@ class DebTagLoader(Loader):
+                         reqargs.append((PreReq, n, r, v))
+                     else:
+                         reqargs.append((OrPreReq, tuple(relation)))
++            value = section.get("recommends")
++            if value and sysconf.get("install-recommends", True):
++                for relation in parserelations(value):
++                    if type(relation) is not list:
++                        n, r, v = relation
++                        reqargs.append((Req, intern(n), r, v))
++                    else:
++                        reqargs.append((OrReq, tuple(relation)))
++            value = section.get("suggests")
++            if value and sysconf.get("install-suggests", False):
++                for relation in parserelations(value):
++                    if type(relation) is not list:
++                        n, r, v = relation
++                        reqargs.append((Req, intern(n), r, v))
++                    else:
++                        reqargs.append((OrReq, tuple(relation)))
+ 
+             upgargs = [(Upg, name, '<', version)]
+ 
+--- smart-1.4.1/tests/aptdeb.txt.deb-suggests~	2010-12-03 23:08:06.000000000 +0100
++++ smart-1.4.1/tests/aptdeb.txt	2012-01-20 21:15:11.430601376 +0100
+@@ -64,9 +64,9 @@ Let's inspect the package data.
+   ['DebNameProvides', 'DebProvides']
+ 
+   >>> sorted(pkg.requires)
+-  [prerequirename1 = prerequireversion1, requirename1 = requireversion1]
++  [prerequirename1 = prerequireversion1, recommendsname1 = recommendsversion1, requirename1 = requireversion1]
+   >>> [type(x).__name__ for x in sorted(pkg.requires)]
+-  ['DebPreRequires', 'DebRequires']
++  ['DebPreRequires', 'DebRequires', 'DebRequires']
+ 
+   >>> sorted(pkg.upgrades)
+   [name1 < version1-release1]
+--- smart-1.4.1/tests/debdir.txt.deb-suggests~	2010-12-03 23:08:06.000000000 +0100
++++ smart-1.4.1/tests/debdir.txt	2012-01-20 21:15:11.430601376 +0100
+@@ -63,9 +63,9 @@ Let's inspect the package data.
+   ['DebNameProvides', 'DebProvides']
+ 
+   >>> sorted(pkg.requires)
+-  [prerequirename1 = prerequireversion1, requirename1 = requireversion1]
++  [prerequirename1 = prerequireversion1, recommendsname1 = recommendsversion1, requirename1 = requireversion1]
+   >>> [type(x).__name__ for x in sorted(pkg.requires)]
+-  ['DebPreRequires', 'DebRequires']
++  ['DebPreRequires', 'DebRequires', 'DebRequires']
+ 
+   >>> sorted(pkg.upgrades)
+   [name1 < version1-release1]

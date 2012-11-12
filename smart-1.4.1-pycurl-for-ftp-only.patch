@@ -1,0 +1,11 @@
+--- smart-1.4.1/smart/fetcher.py.pycurl_for_ftp_only~	2012-01-18 18:57:36.326063397 +0100
++++ smart-1.4.1/smart/fetcher.py	2012-01-18 18:58:19.674116263 +0100
+@@ -1785,7 +1785,7 @@ def enablePycurl():
+     if pycurl:
+         schemes = pycurl.version_info()[8]
+         for scheme in schemes:
+-            if scheme != "file":
++            if scheme.startswith("ftp"):
+                 Fetcher.setHandler(scheme, PyCurlHandler)
+ 
+ hooks.register("enable-pycurl", enablePycurl)

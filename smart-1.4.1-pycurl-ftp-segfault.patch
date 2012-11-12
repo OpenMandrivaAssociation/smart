@@ -1,0 +1,21 @@
+--- smart-1.4.1/smart/fetcher.py.ftp_segfault_pycurl~	2012-01-18 18:48:53.883429534 +0100
++++ smart-1.4.1/smart/fetcher.py	2012-01-18 18:53:11.929741833 +0100
+@@ -1529,6 +1529,18 @@ class PyCurlHandler(FetcherHandler):
+         self._lock = thread.allocate_lock()
+         self._sleep = 0
+ 
++    def stop(self):
++        FetcherHandler.stop(self)
++        # XXX This should not be needed, but somehow it seems to help
++        #     in cases where pycurl segfaults.
++        self._running = False
++        self._lock.acquire()
++        try:
++            self._multi = pycurl.CurlMulti()
++        except NameError:
++            pass
++        self._lock.release()
++
+     def tick(self):
+         import pycurl
+ 

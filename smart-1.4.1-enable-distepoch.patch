@@ -1,0 +1,28 @@
+--- smart-1.4.1/smart/backends/rpm/crpmver.c.distepoch~	2012-01-18 17:05:23.899792165 +0100
++++ smart-1.4.1/smart/backends/rpm/crpmver.c	2012-01-18 17:11:16.227269882 +0100
+@@ -122,8 +122,9 @@ vercmpparts(const char *e1, const char *
+     rc = vercmppart(r1, r2);
+     if (rc)
+         return rc;
+-    /* ignore distepoch */
+-    return 0;
++    else if (!d1 || !d2)
++        return 0;
++    return vercmppart(d1, d2);
+ }
+ 
+ static void
+--- smart-1.4.1/smart/backends/rpm/rpmver.py.distepoch~	2012-01-18 17:06:47.468905469 +0100
++++ smart-1.4.1/smart/backends/rpm/rpmver.py	2012-01-18 17:07:56.161998607 +0100
+@@ -76,8 +76,9 @@ def vercmpparts(e1, v1, r1, d1, e2, v2,
+     rc = vercmppart(r1, r2)
+     if rc:
+         return rc
+-    # ignore distepoch
+-    return 0
++    elif not d1 or not d2:
++        return 0
++    return vercmppart(d1,d2)
+ 
+ # compare alpha and numeric segments of two versions
+ # return 1: a is newer than b

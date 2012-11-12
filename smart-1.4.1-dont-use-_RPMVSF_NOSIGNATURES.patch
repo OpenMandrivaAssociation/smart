@@ -1,0 +1,36 @@
+--- smart-1.4.1/smart/backends/rpm/base.py.nosig~	2011-10-09 10:50:25.000000000 +0200
++++ smart-1.4.1/smart/backends/rpm/base.py	2012-05-18 02:42:06.533456164 +0200
+@@ -54,7 +54,8 @@ def getTS(new=False):
+             rpm.addMacro('_dbpath', "/" + sysconf.get("rpm-dbpath"))
+         getTS.ts = rpm.ts(getTS.root)
+         if not sysconf.get("rpm-check-signatures", False):
+-            getTS.ts.setVSFlags(rpm._RPMVSF_NOSIGNATURES)
++            getTS.ts.setVSFlags(rpm.RPMVSF_NODSAHEADER|rpm.RPMVSF_NORSAHEADER|\
++                    rpm.RPMVSF_NODSA|rpm.RPMVSF_NORSA)
+         rpm_dbpath = sysconf.get("rpm-dbpath", "var/lib/rpm")
+         dbdir = os.path.join(getTS.root, rpm_dbpath)
+         if not os.path.isdir(dbdir):
+@@ -83,7 +84,8 @@ def getTS(new=False):
+             rpm.addMacro('_dbpath', "/" + sysconf.get("rpm-dbpath"))
+         ts = rpm.ts(getTS.root)
+         if not sysconf.get("rpm-check-signatures", False):
+-            ts.setVSFlags(rpm._RPMVSF_NOSIGNATURES)
++            ts.setVSFlags(rpm.RPMVSF_NODSAHEADER|rpm.RPMVSF_NORSAHEADER|\
++                    rpm.RPMVSF_NODSA|rpm.RPMVSF_NORSA)
+         return ts
+     else:
+         return getTS.ts
+--- smart-1.4.1/smart/plugins/yumchannelsync.py.nosig~	2012-05-18 02:43:11.631894832 +0200
++++ smart-1.4.1/smart/plugins/yumchannelsync.py	2012-05-18 02:45:22.597776144 +0200
+@@ -56,7 +56,10 @@ def _getreleasever():
+ 
+     rpmroot = sysconf.get("rpm-root", "/")
+     ts = rpmUtils.transaction.initReadOnlyTransaction(root=rpmroot)
+-    ts.pushVSFlags(~(rpm._RPMVSF_NOSIGNATURES|rpm._RPMVSF_NODIGESTS))
++    ts.pushVSFlags(~(rpm.RPMVSF_NODSAHEADER|rpm.RPMVSF_NORSAHEADER|\
++                    rpm.RPMVSF_NODSA|rpm.RPMVSF_NORSA|\
++                    rpm.RPMVSF_NOSHA1HEADER|rpm.RPMVSF_NOMD5HEADER|\
++                    rpm.RPMVSF_NOSHA1|rpm.RPMVSF_NOMD5))
+     releasever = None
+     # HACK: we're hard-coding the most used distros, will add more if needed
+     idx = ts.dbMatch('provides', 'fedora-release')

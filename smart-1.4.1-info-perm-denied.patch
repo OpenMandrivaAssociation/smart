@@ -1,0 +1,29 @@
+--- smart-1.4.1/smart/fetcher.py.info_perm_denied~	2012-01-18 19:40:04.505163659 +0100
++++ smart-1.4.1/smart/fetcher.py	2012-01-18 19:45:53.631593226 +0100
+@@ -833,16 +833,20 @@ class FileHandler(FetcherHandler):
+                         valid, reason = fetcher.validate(item, localpath,
+                                                          withreason=True)
+                         if valid:
+-                            linkpath = self._fetcher.getLocalPath(item)
+-                            if os.path.isfile(linkpath):
++                            if sysconf.getReadOnly() is False:
++                                linkpath = self._fetcher.getLocalPath(item)
++                                if os.path.isfile(linkpath):
++                                    os.unlink(linkpath)
++                                os.symlink(localpath, linkpath)
++                                uncomppath = uncomphandler.getTargetPath(linkpath)
++                                uncomphandler.uncompress(linkpath)
+                                 os.unlink(linkpath)
+-                            os.symlink(localpath, linkpath)
+-                            uncomppath = uncomphandler.getTargetPath(linkpath)
+-                            uncomphandler.uncompress(linkpath)
++                            else:
++                                iface.warning(_("Can't reload local channel metadata."))
++                                iface.warning(_("Configuration is in readonly mode."))
+                             valid, reason = fetcher.validate(item, uncomppath,
+                                                              withreason=True,
+                                                              uncomp=True)
+-                            os.unlink(linkpath)
+                         if valid:
+                             item.setSucceeded(uncomppath)
+                         else:

@@ -1,0 +1,17 @@
+--- smart-1.4.1/smart/interfaces/gtk/interactive.py.saving_cache_msgbox~	2012-01-18 19:53:20.053155549 +0100
++++ smart-1.4.1/smart/interfaces/gtk/interactive.py	2012-01-20 21:03:24.699564619 +0100
+@@ -510,6 +510,14 @@ class GtkInteractiveInterface(GtkInterfa
+         self._progress.hide()
+         self.refreshPackages()
+         gtk.main()
++        dialog = gtk.MessageDialog(
++            parent         = self._window,
++            flags          = gtk.DIALOG_DESTROY_WITH_PARENT,
++            type           = gtk.MESSAGE_INFO,
++            buttons        = gtk.BUTTONS_OK,
++            message_format = _("Saving cache...") )
++        dialog.set_title(_("Saving cache..."))
++        dialog.show()
+         self.saveState()
+         self.setCatchExceptions(False)
+ 

@@ -1,0 +1,27 @@
+--- smart-1.4.1/smart/fetcher.py.pycurl_speedup~	2011-10-09 10:50:25.000000000 +0200
++++ smart-1.4.1/smart/fetcher.py	2012-01-18 18:48:53.883429534 +0100
+@@ -290,7 +290,7 @@ class Fetcher(object):
+                 else:
+                     item.setSucceeded(uncomppath)
+             prog.show()
+-            time.sleep(0.1)
++            time.sleep(handler._sleep)
+         for handler in handlers:
+             handler.stop()
+         if not progress:
+@@ -688,6 +688,7 @@ class FetcherHandler(object):
+         self._fetcher = fetcher
+         self._queue = []
+         self._cancel = False
++        self._sleep = 0.1
+ 
+     def getQueue(self):
+         return self._queue
+@@ -1526,6 +1527,7 @@ class PyCurlHandler(FetcherHandler):
+         self._running = False
+         self._multi = pycurl.CurlMulti()
+         self._lock = thread.allocate_lock()
++        self._sleep = 0
+ 
+     def tick(self):
+         import pycurl

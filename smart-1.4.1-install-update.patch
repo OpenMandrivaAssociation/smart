@@ -1,0 +1,59 @@
+--- smart-1.4.1/smart/commands/install.py.update_channels~	2012-01-20 21:04:46.027685304 +0100
++++ smart-1.4.1/smart/commands/install.py	2012-01-20 21:54:27.402246672 +0100
+@@ -58,6 +58,12 @@ def option_parser():
+                       help=_("dump metalink xml and don't commit operation"))
+     parser.add_option("--download", action="store_true",
+                       help=_("download packages and don't commit operation"))
++    parser.add_option("--update", action="store_true",
++                      help=_("update channel information before trying "
++                             "to install"))
++    parser.add_option("--update-channels", action="store", metavar="ALIASES",
++                      help=_("update only given channels (comma separated "
++                             "aliases)"))
+     parser.add_option("--explain", action="store_true",
+                       help=_("include additional information about changes,"
+                              "when possible"))
+@@ -97,9 +103,13 @@ def main(ctrl, opts):
+         for url, file in succ.items():
+             ctrl.addFileChannel(file)
+             opts.args.remove(url)
+-    if sysconf.get("auto-update"):
++    if opts.update or opts.update_channels or sysconf.get("auto-update"):
+         from smart.commands import update
+-        updateopts = update.parse_options([])
++        if opts.update_channels:
++            channels = opts.update_channels.split(",")
++        else:
++            channels = []
++        updateopts = update.parse_options(channels)
+         update.main(ctrl, updateopts)
+     else:
+         ctrl.reloadChannels()
+--- smart-1.4.1/smart/commands/upgrade.py.update_channels~	2010-12-06 10:11:05.000000000 +0100
++++ smart-1.4.1/smart/commands/upgrade.py	2012-01-20 21:54:27.402246672 +0100
+@@ -66,6 +66,9 @@ def option_parser():
+     parser.add_option("--update", action="store_true",
+                       help=_("update channel information before trying "
+                              "to upgrade"))
++    parser.add_option("--update-channels", action="store", metavar="ALIASES",
++                      help=_("update only given channels (comma separated "
++                             "aliases)"))
+     parser.add_option("--check", action="store_true",
+                       help=_("just check if there are upgrades to be done"))
+     parser.add_option("--check-update", action="store_true",
+@@ -94,9 +97,13 @@ def main(ctrl, opts):
+     if opts.explain:
+         sysconf.set("explain-changesets", True, soft=True)
+ 
+-    if opts.update or sysconf.get("auto-update"):
++    if opts.update or opts.update_channels or sysconf.get("auto-update"):
+         from smart.commands import update
+-        updateopts = update.parse_options([])
++        if opts.update_channels:
++            channels = opts.update_channels.split(",")
++        else:
++            channels = []
++        updateopts = update.parse_options(channels)
+         update.main(ctrl, updateopts)
+     else:
+         ctrl.reloadChannels()
