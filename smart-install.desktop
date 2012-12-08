@@ -1,0 +1,15 @@
+
+[Desktop Entry]
+Name=Install with Smart Package Manager
+Name[pt_BR]=Gerenciador de Pacotes Smart
+Comment=Next generation package handling tool
+Comment[pt_BR]=Gerenciador de pacotes de próxima geração
+Icon=smart-package-manager
+Exec=/usr/bin/smart-root --gui install %U
+Type=Application
+Terminal=false
+StartupNotify=true
+Categories=GTK;Settings;PackageManager;System;
+MimeType=application/x-rpm;application/x-redhat-package-manager
+X-Desktop-File-Install-Version=0.15
+NoDisplay=true

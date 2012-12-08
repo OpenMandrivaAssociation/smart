@@ -1,0 +1,13 @@
+--- a/smart/backends/rpm/synthesis.py	2011-10-09 12:50:25.000000000 +0400
++++ b/smart/backends/rpm/synthesis.py	2012-11-28 12:32:41.686264442 +0400
+@@ -58,8 +58,8 @@
+         return [posixpath.join(self._loader._baseurl,
+                                self._loader.getFileName(self))]
+ 
+-    def getSize(self, url):
+-        return self._info.get("filesize")
++#    def getSize(self, url):
++#        return self._info.get("filesize")
+ 
+     def getInstalledSize(self):
+         return int(self._info.get("size"))

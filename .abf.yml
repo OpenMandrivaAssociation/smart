@@ -1,10 +1,4 @@
+---
 sources:
-  "smart-1.4.1.tar.bz2:"	51fae89900c386f7848cf5575f5729042c33e171
-  "smart-applet.desktop:"	d64ccde17d1c4fadd0e8d1edb6a874b38302a320
-  "smart-applet.png:"	f692e8d1b5da8e977f265d5fe893202442b177cc
-  "smart.console:"	d5919ae0eb89039ad0e45e5c0be6eb9accb6c92e
-  "smart-install.desktop:"	890586513d006c4b4a1cab0b674c989dfddd6f63
-  "smart-mandriva-distro.py:"	8da88b06d32c0bfcb80fd98f0c102655ae427beb
-  "smart-newer.py:"	690bd5d05653fac6c350801e2528cf2197c47063
-  "smart-package-manager.desktop:"	30ec2bd8255c8cf5c486c6df84c7fb74749a4cb1
-  "smart-unity-distro.py:"	c2b8b632e7212248d6d17c3213bb4e24b243e829
+  smart-1.4.1.tar.bz2: 51fae89900c386f7848cf5575f5729042c33e171
+

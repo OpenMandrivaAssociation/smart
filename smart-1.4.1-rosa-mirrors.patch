@@ -1,0 +1,13 @@
+--- a/smart/plugins/urpmichannelsync.py	2011-03-01 19:00:47.000000000 +0300
++++ b/smart/plugins/urpmichannelsync.py	2012-11-25 12:55:23.909488644 +0400
+@@ -173,8 +173,8 @@
+         def getMirrorListURL(mirrorurl):
+             if mirrorurl == "$MIRRORLIST":
+                 productid = getProductID()
+-                mirrorurl = "http://api.mandriva.com/mirrors/%s.%s.%s.list" \
+-                          % (productid["type"], productid["version"], productid["arch"])
++                mirrorurl = "http://mirror.rosalab.ru/rosa%s/rosa%s.%s.list" \
++                          % (productid["version"], productid["version"], productid["arch"])
+             elif mirrorurl.find("$RELEASE") != -1 or mirrorurl.find("$ARCH") != -1:
+                 (release, arch) = getReleaseArch()
+                 mirrorurl = mirrorurl.replace("$RELEASE", release).replace("$ARCH", arch)

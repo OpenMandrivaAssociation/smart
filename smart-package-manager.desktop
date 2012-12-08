@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Smart Package Manager
+Name[pt_BR]=Gerenciador de Pacotes Smart
+Comment=Next generation package handling tool
+Comment[pt_BR]=Gerenciador de pacotes de próxima geração
+Icon=smart-package-manager
+Exec=/usr/bin/smart-root --gui
+Type=Application
+Terminal=false
+StartupNotify=true
+Categories=GTK;Settings;PackageManager;System;
+X-Desktop-File-Install-Version=0.2
