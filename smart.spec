@@ -197,11 +197,11 @@ rm -f %{buildroot}%{py_platsitedir}/smart/plugins/yumchannelsync.py
 %post gui
 xdg-mime default smart-install.desktop application/x-rpm
 xdg-mime default smart-install.desktop application/x-redhat-package-manager
-%endif
 
 %post
 #Update chanels after install (need with urpmi use only)
 /usr/bin/smart update
+%endif
 
 
 %files -f %{name}.lang
