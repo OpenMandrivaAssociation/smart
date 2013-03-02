@@ -1,8 +1,3 @@
-%if %mdkversion <= 200910
-%bcond_without ksmarttray
-%else
-%bcond_with    ksmarttray
-%endif
 %bcond_without smart_update
 %bcond_without smart_applet
 
@@ -104,21 +99,6 @@ Requires:	gnome-python
 Smart system tray applet.
 %endif
 
-%if %{with ksmarttray}
-%package -n	ksmarttray
-Summary:	KDE tray program for watching updates with Smart Package Manager
-Group:		System/Configuration/Packaging
-Requires(post):	desktop-file-utils
-Requires(postun): desktop-file-utils
-Requires:	%{name}-update = %{EVRD}
-BuildRequires:	kdelibs-devel
-BuildRequires:	popt
-BuildRequires:	rpm-devel
- 
-%description -n ksmarttray
-KDE tray program for watching updates with Smart Package Manager.
-%endif
-
 %prep
 %setup -q
 %patch1 -p1 -b .distepoch~
@@ -140,22 +120,13 @@ KDE tray program for watching updates with Smart Package Manager.
 %patch1007 -p1 -b .computation~
 %patch1008 -p1 -b .update_channels~
 %patch1009 -p1 -b .nosig~
-%patch2000 -p1 -b .rosa_mirrors
-%patch2001 -p1 -b .hdlist_size_ignore
+%patch2000 -p1 -b .rosa_mirrors~
+%patch2001 -p1 -b .hdlist_size_ignore~
 cp %{SOURCE9} contrib/smart-applet
 
 %build
 %setup_compile_flags
 %make
-
-%if %{with ksmarttray}
-pushd contrib/ksmarttray
-make -f admin/Makefile.common
-
-%configure_kde3
-%make
-popd
-%endif
 
 %if %{with smart_update}
 pushd contrib/smart-update
@@ -217,37 +188,8 @@ install -m644 contrib/smart-applet/smart-helper.helper %{buildroot}%{_sysconfdir
 ln -sf consolehelper %{buildroot}%{_bindir}/smart-helper
 %endif
 
-%if %{with ksmarttray}
-pushd contrib/ksmarttray
-%makeinstall_std
-popd
-
-install -m755 contrib/servicemenus/kde_add_smart_channel.sh -D %{buildroot}%{_kde3_bindir}/kde_add_smart_channel.sh
-mkdir -p %{buildroot}%{_kde3_datadir}/apps/konqueror/servicemenus
-desktop-file-install \
-        --dir %{buildroot}%{_kde3_datadir}/apps/konqueror/servicemenus \
-        contrib/servicemenus/add_smart_channel.desktop
-
-# XDG menu entry
-mkdir -p %{buildroot}%{_kde3_datadir}/applications/
-cat > ksmarttray.desktop << EOF
-[Desktop Entry]
-Name=KSmartTray
-Comment=KDE Tray widget for updating RPM files
-Exec=%{_kde3_bindir}/ksmarttray %%F
-Icon=smart-package-manager
-Type=Application
-Categories=Qt;KDE;Settings;PackageManager;
-EOF
-
-%{_bindir}/desktop-file-install \
-        --dir %{buildroot}%{_kde3_datadir}/applications  \
-        ksmarttray.desktop
-%endif
-
 #fix plugin chanel bug
 rm -f %{buildroot}%{py_platsitedir}/smart/plugins/yumchannelsync.py
-
 
 %find_lang %{name}
 
@@ -298,17 +240,6 @@ xdg-mime default smart-install.desktop application/x-redhat-package-manager
 %{_datadir}/applications/smart-applet.desktop
 %{_datadir}/pixmaps/smart-applet.png
 %endif
-
-%if %{with ksmarttray}
-%files -n ksmarttray
-%{_kde3_bindir}/ksmarttray
-%{_kde3_bindir}/kde_add_smart_channel.sh
-%{_kde3_datadir}/apps/ksmarttray
-%{_kde3_datadir}/applications/ksmarttray.desktop
-%{_kde3_datadir}/apps/konqueror/servicemenus/add_smart_channel.desktop
-%{_kde3_iconsdir}/hicolor/48x48/apps/ksmarttray.png
-%endif
-
 
 %changelog
 * Fri May 18 2012 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:1.4.1-3
