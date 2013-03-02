@@ -8,8 +8,8 @@ Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
 License:	GPLv2+
-URL:		http://smartpm.org
-Source0:	http://labix.org/download/smart/%{name}-%{version}.tar.bz2
+URL:		https://code.launchpad.net/smart
+Source0:	https://launchpad.net/smart/trunk/%{version}/+download/%{name}-%{version}.tar.bz2
 Source1:	smart-mandriva-distro.py
 Source2:	smart.console
 Source4:	smart-package-manager.desktop
