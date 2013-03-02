@@ -8,7 +8,7 @@
 
 Name:		smart
 Version:	1.4.1
-Release:	9
+Release:	10
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
@@ -55,7 +55,7 @@ Patch2001:	smart-1.4.1-urpm-cachesize-ignore.patch
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
 # required by test suite
-#BuildRequires:	dpkg
+BuildRequires:	dpkg
 BuildRequires:	python-rpm
 Requires:	python-rpm pythonegg(pyliblzma) >= 0.4.0
 Requires:	usermode-consoleonly
@@ -163,9 +163,8 @@ pushd contrib/smart-update
 popd
 %endif
 
-#Disable test - it's need dpkg
-#check
-#make test
+%check
+make test
 
 %install
 %makeinstall_std
