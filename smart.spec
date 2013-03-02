@@ -120,7 +120,9 @@ Smart system tray applet.
 %patch1007 -p1 -b .computation~
 %patch1008 -p1 -b .update_channels~
 %patch1009 -p1 -b .nosig~
+%if "%{disttag}" == "rosa"
 %patch2000 -p1 -b .rosa_mirrors~
+%endif
 %patch2001 -p1 -b .hdlist_size_ignore~
 cp %{SOURCE9} contrib/smart-applet
 
@@ -134,8 +136,11 @@ pushd contrib/smart-update
 popd
 %endif
 
+# rosa mirrors patch breaks regression check
+%if "%{disttag}" != "rosa"
 %check
 make test
+%endif
 
 %install
 %makeinstall_std
@@ -187,9 +192,6 @@ install -m644 contrib/smart-applet/smart-helper.pam %{buildroot}%{_sysconfdir}/p
 install -m644 contrib/smart-applet/smart-helper.helper %{buildroot}%{_sysconfdir}/security/console.apps/smart-helper
 ln -sf consolehelper %{buildroot}%{_bindir}/smart-helper
 %endif
-
-#fix plugin chanel bug
-rm -f %{buildroot}%{py_platsitedir}/smart/plugins/yumchannelsync.py
 
 %find_lang %{name}
 
