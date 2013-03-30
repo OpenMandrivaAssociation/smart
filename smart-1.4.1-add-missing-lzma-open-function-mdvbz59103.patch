@@ -1,0 +1,27 @@
+--- smart-1.4.1/smart/uncompress.py.orig	2013-03-30 08:52:23.272705098 +0100
++++ smart-1.4.1/smart/uncompress.py	2013-03-30 08:57:00.962405066 +0100
+@@ -54,7 +54,10 @@ class UncompressorHandler(object):
+         return None
+ 
+     def uncompress(self, localpath):
+-        raise Error, _("Unsupported file type")
++        raise Error, _("Unsupported file type " + str(localpath))
++
++    def open(self, localpath):
++        raise Error, _("Unsupported file type " + str(localpath))
+ 
+ class BZ2Handler(UncompressorHandler):
+ 
+@@ -117,8 +120,11 @@ class LZMAHandler(UncompressorHandler):
+         except EOFError, e:
+             raise Error, ("%s\nPossibly corrupted channel file.") % e
+ 
+-Uncompressor.addHandler(LZMAHandler)
++    def open(self, localpath):
++        import lzma
++        return lzma.LZMAFile(localpath)
+ 
++Uncompressor.addHandler(LZMAHandler)
+ 
+ class XZHandler(UncompressorHandler):
+ 
