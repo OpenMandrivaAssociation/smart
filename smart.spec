@@ -3,7 +3,7 @@
 
 Name:		smart
 Version:	1.4.1
-Release:	15
+Release:	16
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
@@ -94,6 +94,7 @@ special suid command.
 Summary:	Smart system tray applet
 Group:		System/Configuration/Packaging
 Requires:	%{name} = %{EVRD}
+Requires:	%{name}-gui = %{EVRD}
 Requires:	gnome-python
 
 %description	applet
