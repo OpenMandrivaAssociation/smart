@@ -1,9 +1,8 @@
 %bcond_without smart_update
-%bcond_without smart_applet
 
 Name:		smart
 Version:	1.4.1
-Release:	12
+Release:	13
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
@@ -15,12 +14,9 @@ Source2:	smart.console
 Source4:	smart-package-manager.desktop
 Source6:	smart-newer.py
 Source7:	smart-install.desktop
-Source8:	smart-applet.desktop
-Source9:	smart-applet.png
 Source10:	smart-unity-distro.py
 
 Patch1:		smart-1.4.1-enable-distepoch.patch
-Patch2:		smart-1.4.1-applet.patch
 
 Patch603:	smart-1.4.1-cache-packages-toggle.patch
 Patch606:	smart-1.4.1-sysstdoutencoding-utf-8.patch
@@ -89,21 +85,9 @@ Allows execution of 'smart update' by normal users through a
 special suid command.
 %endif
 
-%if %{with smart_applet}
-%package	applet
-Summary:	Smart system tray applet
-Group:		System/Configuration/Packaging
-Requires:	%{name} = %{EVRD}
-Requires:	gnome-python
-
-%description	applet
-Smart system tray applet.
-%endif
-
 %prep
 %setup -q
 %patch1 -p1 -b .distepoch~
-%patch2 -p1 -b .applet~
 %patch603 -p1 -b .cache_packages_toggle~
 %patch606 -p1 -b .sysstdoutencoding_utf-8~
 %patch607 -p1 -b .saving_cache_msgbox~
@@ -126,7 +110,6 @@ Smart system tray applet.
 %patch2000 -p1 -b .rosa_mirrors~
 %endif
 %patch2001 -p1 -b .hdlist_size_ignore~
-cp %{SOURCE9} contrib/smart-applet
 
 %build
 %setup_compile_flags
@@ -184,17 +167,6 @@ install -m644 %{SOURCE6} -D %{buildroot}%{py_platsitedir}/%{name}/commands/newer
 install -m755 contrib/smart-update/smart-update -D %{buildroot}%{_bindir}/smart-update
 %endif
 
-%if %{with smart_applet}
-desktop-file-install \
-	--dir %{buildroot}%{_datadir}/applications \
-	%{SOURCE8}
-install -m755 contrib/smart-applet/smart-applet.py  -D %{buildroot}%{_bindir}/smart-applet
-install -m644 contrib/smart-applet/smart-applet.png  -D %{buildroot}%{_datadir}/pixmaps/smart-applet.png
-install -m644 contrib/smart-applet/smart-helper.pam %{buildroot}%{_sysconfdir}/pam.d/smart-helper
-install -m644 contrib/smart-applet/smart-helper.helper %{buildroot}%{_sysconfdir}/security/console.apps/smart-helper
-ln -sf consolehelper %{buildroot}%{_bindir}/smart-helper
-%endif
-
 %find_lang %{name}
 
 %if "%{disttag}" == "unity"
@@ -235,15 +207,6 @@ xdg-mime default smart-install.desktop application/x-redhat-package-manager
 %attr(4755,root,root) %{_bindir}/smart-update
 %endif
 
-%if %{with smart_applet}
-%files applet
-%config(noreplace) %{_sysconfdir}/security/console.apps/smart-helper
-%config(noreplace) %{_sysconfdir}/pam.d/smart-helper
-%attr(4755,root,root) %{_bindir}/smart-applet
-%{_bindir}/smart-helper
-%{_datadir}/applications/smart-applet.desktop
-%{_datadir}/pixmaps/smart-applet.png
-%endif
 
 %changelog
 * Fri May 18 2012 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:1.4.1-3
