@@ -2,7 +2,7 @@
 
 Name:		smart
 Version:	1.4.1
-Release:	18
+Release:	19
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
