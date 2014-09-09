@@ -1,4 +1,4 @@
----
-sources:
+removed_sources:
   smart-1.4.1.tar.bz2: 51fae89900c386f7848cf5575f5729042c33e171
-
+sources:
+  smart-1.5.tar.bz2: 2cb166b7fb5322b84b8fdf6613a317550cae584b
