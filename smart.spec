@@ -112,6 +112,8 @@ special suid command.
 %patch2001 -p1 -b .hdlist_size_ignore~
 
 %build
+export PYTHON=python2
+
 %setup_compile_flags
 %make
 
