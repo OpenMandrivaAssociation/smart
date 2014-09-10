@@ -35,7 +35,7 @@ Patch803:	smart-1.4.1-uncompress-close.patch
 # https://bugs.launchpad.net/smart/+bug/268143
 # add suggest config to ignore or install for rpm&deb
 #Patch805:	smart-1.4.1-rpm-suggests-config.patch
-Patch806:	smart-1.4.1-deb-suggests-config.patch
+#Patch806:	smart-1.4.1-deb-suggests-config.patch
 Patch1007:	smart-1.4.1-computing_upgrades_989_988.patch
 Patch1008:	smart-1.4.1-install-update.patch
 Patch1009:	smart-1.4.1-dont-use-_RPMVSF_NOSIGNATURES.patch
@@ -100,8 +100,8 @@ special suid command.
 %patch618 -p1 -b .inst_by_provide_fix~
 %patch619 -p1 -b .info_perm_denied~
 %patch803 -p1 -b .uncompress_close~
-%patch805 -p1 -b .rpm_suggests~
-%patch806 -p1 -b .deb_suggests~
+#patch805 -p1 -b .rpm_suggests~
+#patch806 -p1 -b .deb_suggests~
 %patch1007 -p1 -b .computation~
 %patch1008 -p1 -b .update_channels~
 %patch1009 -p1 -b .nosig~
