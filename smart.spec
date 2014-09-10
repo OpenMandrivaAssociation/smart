@@ -38,7 +38,7 @@ Patch803:	smart-1.4.1-uncompress-close.patch
 #Patch806:	smart-1.4.1-deb-suggests-config.patch
 Patch1007:	smart-1.4.1-computing_upgrades_989_988.patch
 Patch1008:	smart-1.4.1-install-update.patch
-Patch1009:	smart-1.4.1-dont-use-_RPMVSF_NOSIGNATURES.patch
+#Patch1009:	smart-1.4.1-dont-use-_RPMVSF_NOSIGNATURES.patch
 Patch1010:	smart-1.4.1-add-missing-lzma-open-function-mdvbz59103.patch
 #ROSA patch
 Patch2000:	smart-1.4.1-rosa-mirrors.patch
@@ -104,7 +104,7 @@ special suid command.
 #patch806 -p1 -b .deb_suggests~
 %patch1007 -p1 -b .computation~
 %patch1008 -p1 -b .update_channels~
-%patch1009 -p1 -b .nosig~
+#patch1009 -p1 -b .nosig~
 %patch1010 -p1 -b .mdvbz59103~
 %if "%{disttag}" == "rosa"
 %patch2000 -p1 -b .rosa_mirrors~
