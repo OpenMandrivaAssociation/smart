@@ -55,7 +55,7 @@ Requires:	usermode-consoleonly
 Requires:	pythonegg(psyco)
 %endif
 Suggests:	pythonegg(pycurl)
-BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python2)
 
 %description
 Smart Package Manager is a next generation package handling tool.
