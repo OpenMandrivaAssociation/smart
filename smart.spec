@@ -2,7 +2,7 @@
 
 Name:		smart
 Version:	1.5
-Release:	2
+Release:	3
 Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
