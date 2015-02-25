@@ -49,6 +49,7 @@ BuildRequires:	desktop-file-utils
 # required by test suite
 BuildRequires:	dpkg
 BuildRequires:	python-rpm
+BuildRequires:	pythonegg(pyliblzma) >= 0.4.0
 Requires:	python-rpm pythonegg(pyliblzma) >= 0.4.0
 Requires:	usermode-consoleonly
 %ifarch %{ix86}
