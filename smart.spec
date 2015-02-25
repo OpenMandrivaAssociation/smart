@@ -126,10 +126,12 @@ popd
 # rosa mirrors patch breaks regression check
 %if "%{disttag}" != "rosa"
 %check
+export PYTHON=python2
 make test
 %endif
 
 %install
+export PYTHON=python2
 %makeinstall_std
 
 %if "%{disttag}" == "unity"
@@ -163,7 +165,7 @@ desktop-file-install \
 install -m644 smart/interfaces/images/smart.png -D %{buildroot}%{_datadir}/pixmaps/smart-package-manager.png
 mkdir -p %{buildroot}%{_localstatedir}/lib/smart/channels
 
-install -m644 %{SOURCE6} -D %{buildroot}%{py_platsitedir}/%{name}/commands/newer.py
+install -m644 %{SOURCE6} -D %{buildroot}%{py2_platsitedir}/%{name}/commands/newer.py
 
 %if %{with smart_update}
 install -m755 contrib/smart-update/smart-update -D %{buildroot}%{_bindir}/smart-update
@@ -191,10 +193,10 @@ xdg-mime default smart-install.desktop application/x-redhat-package-manager
 %attr(0755,root,root)%{_bindir}/%{name}-root
 %dir %{_prefix}/lib/%{name}
 %{_prefix}/lib/%{name}/distro.py
-%dir %{py_platsitedir}/smart
-%{py_platsitedir}/smart/*
-%{py_platsitedir}/*.egg-info
-%exclude %{py_platsitedir}/smart/interfaces/gtk
+%dir %{py2_platsitedir}/smart
+%{py2_platsitedir}/smart/*
+%{py2_platsitedir}/*.egg-info
+%exclude %{py2_platsitedir}/smart/interfaces/gtk
 %dir %{_localstatedir}/lib/smart/channels
 %{_mandir}/*/*
 
@@ -202,7 +204,7 @@ xdg-mime default smart-install.desktop application/x-redhat-package-manager
 %defattr(0644,root,root,0755)
 %{_datadir}/applications/smart-package-manager.desktop
 %{_datadir}/pixmaps/smart-package-manager.png
-%{py_platsitedir}/smart/interfaces/gtk
+%{py2_platsitedir}/smart/interfaces/gtk
 
 %if %{with smart_update}
 %files update
