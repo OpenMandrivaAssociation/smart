@@ -7,7 +7,7 @@ Epoch:		1
 Group:		System/Configuration/Packaging
 Summary:	Next generation package handling tool
 License:	GPLv2+
-URL:		http://smartpm.github.io/smart/
+URL:		https://smartpm.github.io/smart/
 Source0:	https://github.com/smartpm/smart/releases/download/v%{version}/%{name}-%{version}.tar.bz2
 Source1:	smart-mandriva-distro.py
 Source2:	smart.console
