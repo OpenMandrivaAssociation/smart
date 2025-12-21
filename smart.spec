@@ -44,6 +44,7 @@ Patch1010:	smart-1.4.1-add-missing-lzma-open-function-mdvbz59103.patch
 Patch2000:	smart-1.4.1-rosa-mirrors.patch
 Patch2001:	smart-1.4.1-urpm-cachesize-ignore.patch
 
+BuildRequires:	make
 BuildRequires:	rpm-mandriva-setup
 BuildRequires:	desktop-file-utils
 # required by test suite
